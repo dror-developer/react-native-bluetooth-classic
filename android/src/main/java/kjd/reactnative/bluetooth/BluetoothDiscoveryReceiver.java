@@ -20,7 +20,7 @@ import kjd.reactnative.RCTEventEmitter;
 public class BluetoothDiscoveryReceiver extends BroadcastReceiver {
 
     private DiscoveryCompleteListener onComplete;
-    private Map<String,BluetoothDevice> unpairedDevices;
+    private Map<String,BluetoothDeviceWithRssi> unpairedDevices;
 
     public BluetoothDiscoveryReceiver(DiscoveryCompleteListener listener) {
         this.onComplete = listener;
@@ -36,7 +36,11 @@ public class BluetoothDiscoveryReceiver extends BroadcastReceiver {
             BluetoothDevice device = intent.getParcelableExtra(BluetoothDevice.EXTRA_DEVICE);
 
             if (!unpairedDevices.containsKey(device.getAddress())) {
-                unpairedDevices.put(device.getAddress(), device);
+                int  rssi = intent.getShortExtra(BluetoothDevice.EXTRA_RSSI,Short.MIN_VALUE);
+                BluetoothDeviceWithRssi deviceWithRssi = new BluetoothDeviceWithRssi();
+                deviceWithRssi.device = device;
+                deviceWithRssi.rssi = rssi;
+                unpairedDevices.put(device.getAddress(), deviceWithRssi);
             }
         } else if (BluetoothAdapter.ACTION_DISCOVERY_FINISHED.equals(action)) {
             onComplete.onDiscoveryComplete(unpairedDevices.values());
@@ -44,6 +48,11 @@ public class BluetoothDiscoveryReceiver extends BroadcastReceiver {
     }
 
     public interface DiscoveryCompleteListener {
-        void onDiscoveryComplete(Collection<BluetoothDevice> unpairedDevices);
+        void onDiscoveryComplete(Collection<BluetoothDeviceWithRssi> unpairedDevices);
+    }
+    
+    public class BluetoothDeviceWithRssi {
+        public BluetoothDevice device;
+        public int rssi;
     }
 }

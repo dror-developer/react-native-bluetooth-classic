@@ -20,13 +20,17 @@ public class RNUtils {
     public static String parseCalendar(Calendar cal) {
         return sdf.format(cal.getTime());
     }
+    
+    public static WritableMap deviceToWritableMap(BluetoothDevice device) {
+        return deviceToWritableMap(device, 0);
+    }
 
     /**
      * This needs to be put somewhere better, but for now it'll work.
      *
      * @param device BluetoothDevice
      */
-    public static WritableMap deviceToWritableMap(BluetoothDevice device) {
+    public static WritableMap deviceToWritableMap(BluetoothDevice device, int rssi) {
         if (device == null)
             return null;
 
@@ -34,6 +38,7 @@ public class RNUtils {
 
         params.putString("name", device.getName());
         params.putString("address", device.getAddress());
+        params.putString("rssi", rssi);
         params.putString("id", device.getAddress());
         params.putInt("class", device.getBluetoothClass() != null
                 ? device.getBluetoothClass().getDeviceClass() : -1);
