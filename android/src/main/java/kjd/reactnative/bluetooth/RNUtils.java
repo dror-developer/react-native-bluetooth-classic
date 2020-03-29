@@ -26,7 +26,7 @@ public class RNUtils {
      *
      * @param device BluetoothDevice
      */
-    public static WritableMap deviceToWritableMap(BluetoothDevice device) {
+    public static WritableMap deviceToWritableMap(BluetoothDevice device, int rssi) {
         if (device == null)
             return null;
 
@@ -34,6 +34,7 @@ public class RNUtils {
 
         params.putString("name", device.getName());
         params.putString("address", device.getAddress());
+        params.putString("rssi", rssi);
         params.putString("id", device.getAddress());
         params.putInt("class", device.getBluetoothClass() != null
                 ? device.getBluetoothClass().getDeviceClass() : -1);
