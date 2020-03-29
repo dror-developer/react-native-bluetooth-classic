@@ -20,6 +20,10 @@ public class RNUtils {
     public static String parseCalendar(Calendar cal) {
         return sdf.format(cal.getTime());
     }
+    
+    public static WritableMap deviceToWritableMap(BluetoothDevice device) {
+        return deviceToWritableMap(device, 0);
+    }
 
     /**
      * This needs to be put somewhere better, but for now it'll work.
