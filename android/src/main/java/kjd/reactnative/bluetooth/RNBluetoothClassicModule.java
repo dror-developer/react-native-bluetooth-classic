@@ -394,10 +394,10 @@ public class RNBluetoothClassicModule
   }
 
   @Override
-  public void onDiscoveryComplete(Collection<BluetoothDevice> unpairedDevices) {
+  public void onDiscoveryComplete(Collection<BluetoothDeviceWithRssi> unpairedDevices) {
     WritableArray deviceArray = Arguments.createArray();
-    for (BluetoothDevice device : unpairedDevices) {
-      deviceArray.pushMap(RNUtils.deviceToWritableMap(device));
+    for (BluetoothDeviceWithRssi device : unpairedDevices) {
+      deviceArray.pushMap(RNUtils.deviceToWritableMap(device.device, device.rssi));
     }
 
     mDeviceDiscoveryPromise.resolve(deviceArray);
