@@ -399,15 +399,16 @@ public class RNBluetoothClassicModule
     for (BluetoothDeviceWithRssi device : unpairedDevices) {
       deviceArray.pushMap(RNUtils.deviceToWritableMap(device.device, device.rssi));
     }
-
-    mDeviceDiscoveryPromise.resolve(deviceArray);
-    mDeviceDiscoveryPromise = null;
-
+  if (mDeviceDiscoveryPromise!=null){
+      mDeviceDiscoveryPromise.resolve(deviceArray);
+      mDeviceDiscoveryPromise = null;
+    }
+          
     try {
       mReactContext.unregisterReceiver(mBluetoothDiscoveryReceiver);
       mBluetoothDiscoveryReceiver = null;
     } catch (Exception e) {
-      Log.e(this.getClass().getSimpleName(), "Unable to unregister receiver", e);
+      //Log.e(this.getClass().getSimpleName(), "Unable to unregister receiver", e);
     }
   }
 
